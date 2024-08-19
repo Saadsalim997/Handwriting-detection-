@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Digit & Letter Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Handwritten Digit & Letter Detection</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="imageUpload" class="upload-label">Upload Image:</label>
+            <input type="file" id="imageUpload" accept="image/*" capture="camera" class="upload-input">
+            <button id="uploadBtn" type="submit" class="upload-btn">Upload and Detect</button>
+        </form>
+        <div id="result">Prediction will appear here...</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('imageUpload');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            resultDiv.textContent = 'Processing...';
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            resultDiv.textContent = `Prediction: ${result.prediction}`;
+        });
+    </script>
+</body>
+</html>
