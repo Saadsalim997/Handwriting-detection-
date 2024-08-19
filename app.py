@@ -4,11 +4,14 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
 
-app = Flask(__name__, template_folder=r'C:\Users\Kratos\Handwriting Detection\templates',
-            static_folder=r'C:\Users\Kratos\Handwriting Detection\static')
+# Set the base directory of the application
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__, template_folder=os.path.join(basedir, 'templates'),
+            static_folder=os.path.join(basedir, 'static'))
 
 # Load the trained model
-model_path = r'C:\Users\Kratos\Handwriting Detection\handwritten_digit_model.h5'
+model_path = os.path.join(basedir, 'handwritten_digit_model.h5')
 model = load_model(model_path)
 
 @app.route('/')
